@@ -1,0 +1,13 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.python-version
+dist/
+build/
+*.egg-info/
+
+# Gmail OAuth
+credentials.json
+token.json
