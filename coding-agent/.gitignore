@@ -1,0 +1,17 @@
+# python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+
+# environment
+.env
+
+# ides
+.vscode/
+.idea/
+*.swp
