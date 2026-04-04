@@ -1,4 +1,6 @@
 import asyncio
+import os
+from urllib.parse import urljoin
 from playwright.async_api import async_playwright
 from bs4 import BeautifulSoup
 
@@ -73,20 +75,37 @@ class BrowserManager:
             return f"Error extracting page content: {e}"
 
     async def get_links(self) -> str:
-        """Returns the top 20 most relevant clickable links on the page."""
+        """Returns a cleaned, unique, and prioritized list of 20 relevant links."""
         if not self.page:
             return "Error: No page open."
         
         try:
             links = await self.page.query_selector_all("a")
             results = []
-            for link in links[:20]: 
-                text = await link.inner_text()
-                href = await link.get_attribute("href")
-                if text.strip() and href:
-                    results.append(f"- [{text.strip()}]({href})")
+            seen_hrefs = set()
+            current_url = self.page.url
             
-            return "--- TOP 20 LINKS ---\n" + "\n".join(results) if results else "No links found."
+            for link in links:
+                if len(results) >= 20: 
+                    break
+                    
+                text = (await link.inner_text()).strip()
+                href = await link.get_attribute("href")
+                
+                # Filter junk and empty text
+                if not text or not href or href.startswith(("#", "javascript:", "mailto:", "tel:")):
+                    continue
+                
+                # Normalize and deduplicate
+                full_url = urljoin(current_url, href)
+                if full_url in seen_hrefs:
+                    continue
+                
+                seen_hrefs.add(full_url)
+                results.append(f"- [{text}]({href})")
+            
+            header = f"--- TOP {len(results)} RELEVANT LINKS ---"
+            return f"{header}\n" + "\n".join(results) if results else "No relevant links found."
         except Exception as e:
             return f"Error getting links: {e}"
 
