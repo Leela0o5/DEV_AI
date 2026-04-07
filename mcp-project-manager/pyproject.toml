@@ -1,0 +1,22 @@
+[project]
+name = "mcp-project-manager"
+version = "0.1.0"
+description = "Autonomous project manager agent with MCP integrations (Slack, Notion)"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "google-genai>=0.1.0",
+    "fastmcp>=0.1.0",
+    "APScheduler==3.11.2",
+    "httpx>=0.25.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "rich>=13.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]

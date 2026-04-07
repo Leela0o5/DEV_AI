@@ -1,0 +1,13 @@
+.venv
+__pycache__
+*.pyc
+.env
+.env.local
+.DS_Store
+*.egg-info
+dist
+build
+.pytest_cache
+.coverage
+.ruff_cache
+uv.lock
